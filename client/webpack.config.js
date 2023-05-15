@@ -18,13 +18,51 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+        filename: 'index.html',
+        chunks: ['main']
+      }),
+      new HtmlWebpackPlugin({
+        template: './src/install.html',
+        filename: 'install.html',
+        chunks: ['install']
+      }),
+      new WebpackPwaManifest({
+        filename: 'manifest.json',
+        name: 'My App',
+        short_name: 'My App',
+        theme_color: '#ffffff',
+        background_color: '#ffffff',
+        icons: [
+          {
+            src: path.resolve('src/assets/icon.png'),
+            sizes: [96, 128, 192, 256, 384, 512],
+            destination: path.join('assets', 'icons')
+          }
+        ]
+      }),
+      new InjectManifest({
+        swSrc: './src/js/sw.js',
+        swDest: 'sw.js'
+      })
     ],
-
     module: {
       rules: [
-        
-      ],
-    },
+        {
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader'],
+        },
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+            },
+          },
+        },
+      ]},
+    };
   };
-};
