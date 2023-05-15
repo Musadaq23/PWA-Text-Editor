@@ -10,8 +10,8 @@ module.exports = () => {
   return {
     mode: 'development',
     entry: {
-      main: './src/js/index.js',
-      install: './src/js/install.js'
+      main: '/src/js/index.js',
+      install: '/src/js/install.js'
     },
     output: {
       filename: '[name].bundle.js',
@@ -19,32 +19,31 @@ module.exports = () => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './src/index.html',
-        filename: 'index.html',
-        chunks: ['main']
-      }),
-      new HtmlWebpackPlugin({
-        template: './src/install.html',
-        filename: 'install.html',
-        chunks: ['install']
+        template: './index.html',
+        title: 'Just Another Text Editor'
       }),
       new WebpackPwaManifest({
-        filename: 'manifest.json',
-        name: 'My App',
-        short_name: 'My App',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        name: 'Just Another Text Editor',
+        short_name: 'J.A.T.E.',
+        description: 'Take notes with Javascript syntax highlighting!',
+        background_color: '#225ca3',
+        theme_color: '#225ca3',
+        id: '/',
+        start_url: '/',
+        publicPath: '/',
+        fingerprints: false,
         icons: [
           {
-            src: path.resolve('src/assets/icon.png'),
-            sizes: [96, 128, 192, 256, 384, 512],
-            destination: path.join('assets', 'icons')
-          }
-        ]
+            src: path.resolve('src/images/logo.png'),
+            // size: '96x96',
+            sizes: [96, 128, 256, 384, 512],
+            destination: path.join('assets', 'icons'),
+          },
+        ],
       }),
       new InjectManifest({
-        swSrc: './src/js/sw.js',
-        swDest: 'sw.js'
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js'
       })
     ],
     module: {
